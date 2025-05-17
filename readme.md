@@ -1,145 +1,125 @@
+Claro! Vou refazer o README.md seguindo os padrões mais usados no GitHub, com seções claras, cabeçalhos, listas, blocos de código, links para seções e uso correto do markdown.
+
+Segue o README.md formatado e estilizado para o GitHub:
+
 ```markdown
-# 🏬 Loja de Produtos - Arquitetura de Microserviços
+# Loja de Produtos - Microserviços com Clean Architecture e Kafka
 
-Este projeto é uma loja online construída com arquitetura **orientada a domínio** (DDD), seguindo os princípios da **Clean Architecture** e **Ports and Adapters (Hexagonal Architecture)**.
-
-Cada microserviço é independente e se comunica via **Apache Kafka**, utilizando troca de mensagens assíncronas.
+Este projeto é uma solução baseada em microserviços para uma loja online, construída com **Java Spring Boot**, aplicando a **Clean Architecture** e comunicação assíncrona por meio do **Apache Kafka**.
 
 ---
 
-## 🧱 Arquitetura
+## 🚀 Tecnologias Utilizadas
 
-### Camadas principais por serviço:
+- Java 21 + Spring Boot 3.x  
+- Apache Kafka  
+- PostgreSQL + Spring Data JPA  
+- Docker e Docker Compose  
+- Lombok  
+- JUnit 5 + Mockito + Testcontainers (testes)  
 
-```
+---
 
-product-service/
-└── src/
-└── main/java/com/store/product/
-├── entrypoints/         ← Entradas do sistema (REST, Kafka listeners, etc.)
-│   └── rest/            ← Controllers HTTP
-│   └── messaging/       ← Listeners Kafka (consumo de mensagens)
-│
-├── application/         ← Lógica de aplicação
-│   ├── usecases/        ← Interfaces dos casos de uso
-│   ├── services/        ← Implementações dos casos de uso
-│   ├── commands/        ← DTOs de entrada para os casos de uso
+## 📁 Estrutura do Projeto
+
+src/main/java/com/store/{service}/
+├── entrypoints/           # Camada de entrada (REST Controllers, Kafka Listeners)
+│   ├── rest/
+│   └── messaging/
+├── application/           # Casos de uso, comandos, serviços e ports
+│   ├── usecases/
+│   ├── services/
+│   ├── commands/
 │   └── ports/
-│       ├── in/          ← Interfaces chamadas pela camada externa
-│       └── out/         ← Interfaces que chamam adaptadores (DB, Kafka, etc.)
-│
-├── domain/              ← Entidades e regras de negócio puras
+│       ├── in/            # Interfaces para entrada (ex: UseCases)
+│       └── out/           # Interfaces para saída (ex: repositórios, produtores Kafka)
+├── domain/                # Entidades e regras de negócio puras
 │   ├── model/
 │   └── exceptions/
-│
-├── infrastructure/      ← Implementações concretas (adaptadores)
-│   ├── persistence/     ← JPA, Repositórios, etc.
-│   └── messaging/       ← Kafka Producers, Serializers
-│
-└── ProductServiceApplication.java
+├── infrastructure/        # Implementações concretas (adaptadores)
+│   ├── persistence/
+│   └── messaging/
+└── Application.java       # Classe principal do serviço
 
 ````
 
 ---
 
-## 🧩 Microserviços
+## ⚙️ Como Rodar Localmente
 
-| Serviço           | Responsabilidade                                |
-|------------------|--------------------------------------------------|
-| `product-service`| Gestão de produtos da loja                       |
-| `order-service`  | Processamento e rastreio de pedidos              |
-| `inventory-service`| Controle de estoque e sincronização            |
-| `payment-service`| Processamento de pagamentos                      |
-| `notification-service`| Envio de e-mails e notificações Kafka        |
+### Pré-requisitos
 
----
+- Docker e Docker Compose instalados  
+- Java 17+ instalado  
 
-## 📦 Tecnologias Utilizadas
+### Passos
 
-- **Java 17 + Spring Boot 3**
-- **Apache Kafka** (mensageria assíncrona)
-- **PostgreSQL** (persistência relacional)
-- **Spring Data JPA**
-- **Lombok**
-- **MapStruct** (opcional para mapeamentos)
-- **Docker + Docker Compose** (infraestrutura local)
-- **Testcontainers** (testes de integração)
-- **Jaeger + OpenTelemetry** (observabilidade)
-
----
-
-## 📬 Comunicação Assíncrona
-
-Todos os eventos entre os serviços são trocados via **Apache Kafka**, com tópicos como:
-
-- `product-created`
-- `order-created`
-- `inventory-updated`
-- `payment-processed`
-- `notification-email`
-
-Exemplo de fluxo:
-1. `product-service` publica evento `product-created`
-2. `inventory-service` consome e atualiza o estoque
-3. `order-service` consome e cria um pedido com esse produto
-4. `notification-service` envia notificação ao cliente
-
----
-
-## ▶️ Como Executar Localmente
-
-### Pré-requisitos:
-
-- Docker e Docker Compose instalados
-- Java 17
-- Kafka + Zookeeper (já incluídos no `docker-compose.yml`)
-
-### Subindo a infraestrutura:
+1. Inicie os serviços dependentes (Kafka e PostgreSQL) usando Docker Compose:
 
 ```bash
 docker-compose up -d
 ````
 
-### Rodando um microserviço (ex: product-service):
+2. Execute o microserviço (exemplo: `product-service`):
 
 ```bash
 cd product-service
 ./mvnw spring-boot:run
 ```
 
+3. Acesse a API REST:
+
+```
+http://localhost:8080/api/products
+```
+
+---
+
+## 📬 Comunicação Assíncrona com Kafka
+
+* Eventos são publicados em tópicos Kafka (ex: `product-created`, `order-created`)
+* Listeners consomem eventos para orquestração e integração
+* Essa abordagem promove desacoplamento, escalabilidade e resiliência
+
+---
+
+## 🔄 Fluxo de Dados
+
+1. A requisição chega ao Controller (entrypoint REST ou Kafka Listener).
+2. Controller chama o UseCase (porta de entrada - **port in**).
+3. UseCase executa a regra de negócio via Services.
+4. Services usam as portas de saída (**port out**) para acessar repositórios, enviar mensagens, etc.
+5. Adaptadores implementam essas interfaces para persistência (JPA), mensageria (Kafka Producer), etc.
+
+---
+
+## 📦 Microserviços do Sistema
+
+* **product-service**: gestão de produtos
+* **order-service**: gerenciamento de pedidos
+* **inventory-service**: controle de estoque
+* **payment-service**: processamento de pagamentos
+* **notification-service**: envio de notificações
+
 ---
 
 ## 🧪 Testes
+
+Para rodar os testes unitários e de integração:
 
 ```bash
 ./mvnw test
 ```
 
-Testes unitários e de integração com:
+---
 
-* JUnit 5
-* Mockito
-* Testcontainers (Kafka/Postgres)
+## 🔧 Boas Práticas Adotadas
+
+* Seguir Clean Architecture para desacoplamento e facilidade de manutenção
+* Utilizar DTOs e Commands para entrada e saída de dados
+* Exceptions customizadas no domínio
+* Tratamento global de erros na API
+* Logs estruturados e rastreamento distribuído (OpenTelemetry / Jaeger)
 
 ---
 
-## 📁 Padrões e Convenções
-
-* Cada serviço segue **Clean Architecture**
-* **Casos de uso** são explicitamente definidos
-* Uso de **Ports (in/out)** para isolamento
-* Nenhuma camada conhece outra diretamente, exceto via interfaces
-
----
-
-## 📚 Futuro
-
-* Integração com **Keycloak** para autenticação
-* Suporte a **Event Sourcing** e **CQRS**
-* Painel de administração em Angular/React
-
----
-
-## 🛡️ Licença
-
-MIT License.
