@@ -2,6 +2,8 @@ package com.zerefstbl.store.domain.model;
 
 import java.math.BigDecimal;
 
+import main.java.com.zerefstbl.store.domain.validator.FluentValidatorImpl;
+
 public class Product {
 
     private final long id;
@@ -16,7 +18,7 @@ public class Product {
         this.description = description;
     }
 
-    public Product newProduct(final String name, final String description, final BigDecimal price) {
+    public static Product newProduct(final String name, final String description, final BigDecimal price) {
         isValidPrice(price);
         return new Product(Long.MIN_VALUE, name, price, description);
     }
@@ -25,10 +27,17 @@ public class Product {
         return new Product(id, name, price, description);
     }
 
-    private void isValidPrice(final BigDecimal price) {
+    private static void isValidPrice(final BigDecimal price) {
         if (price.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalStateException("Invalid product price. Price must be have price more than 0");
         }
+    }
+
+    private void validate() {
+        new FluentValidatorImpl<>(this)
+            .validate(p -> p.price.compareTo(BigDecimal.ZERO) < 0, "Invalid product price. Product must be have price more than 0")
+            .validate(p -> p.name != null || p.name.isEmpty, "Name should not be null os empty")
+            .execute();
     }
 
     public long getId() {

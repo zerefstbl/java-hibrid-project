@@ -6,7 +6,7 @@ import com.zerefstbl.store.domain.model.Product;
 
 public record RetrieveProductOutput(long id, String name, String description, BigDecimal price) {
     
-    public RetrieveProductOutput from(final Product product) {
+    public static RetrieveProductOutput from(final Product product) {
         return new RetrieveProductOutput(product.getId(), product.getName(), product.getDescription(), product.getPrice());
     }
     
