@@ -1,7 +1,3 @@
-Claro! Vou refazer o README.md seguindo os padrões mais usados no GitHub, com seções claras, cabeçalhos, listas, blocos de código, links para seções e uso correto do markdown.
-
-Segue o README.md formatado e estilizado para o GitHub:
-
 ```markdown
 # Loja de Produtos - Microserviços com Clean Architecture e Kafka
 
