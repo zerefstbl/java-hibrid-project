@@ -29,8 +29,8 @@ public class CreateProductService implements CreateProductUseCase {
 
     public void validate(Product product) {
         new FluentValidatorImpl<>(product)
-            .validate(p -> loadProductPort.existsByName(p.getName()), "Product with this name already exist.")
-            .execute();
+                .validate(p -> loadProductPort.existsByName(p.getName()), "Product with this name already exist.")
+                .execute();
     }
-    
+
 }

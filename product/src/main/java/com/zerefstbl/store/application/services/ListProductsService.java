@@ -16,7 +16,11 @@ public class ListProductsService implements ListProducstUseCase {
 
     @Override
     public List<ListProductOutput> execute() {
-        return loadProductPort.findAll();
+        return loadProductPort
+                .findAll()
+                .stream()
+                .map(ListProductOutput::from)
+                .toList();
     }
-    
+
 }

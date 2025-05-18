@@ -23,7 +23,7 @@ public class Product {
         return new Product(Long.MIN_VALUE, name, price, description);
     }
 
-    public Product with(final long id, final String name, final String description, final BigDecimal price) {
+    public static Product with(final long id, final String name, final String description, final BigDecimal price) {
         return new Product(id, name, price, description);
     }
 
@@ -35,9 +35,9 @@ public class Product {
 
     private void validate() {
         new FluentValidatorImpl<>(this)
-            .validate(p -> p.price.compareTo(BigDecimal.ZERO) < 0, "Invalid product price. Product must be have price more than 0")
-            .validate(p -> p.name != null || p.name.isEmpty, "Name should not be null os empty")
-            .execute();
+                .validate(p -> p.price.compareTo(BigDecimal.ZERO) < 0, "Invalid product price. Product must be have price more than 0")
+                .validate(p -> p.name != null || p.name.isEmpty, "Name should not be null os empty")
+                .execute();
     }
 
     public long getId() {
