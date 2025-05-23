@@ -4,11 +4,11 @@ import com.zerefstbl.store.application.commands.CreateProductCommand;
 import com.zerefstbl.store.application.outputs.CreateProductOutput;
 import com.zerefstbl.store.application.ports.in.CreateProductUseCase;
 import com.zerefstbl.store.application.ports.out.LoadProductPort;
+import com.zerefstbl.store.domain.exceptions.ValidationException;
 import com.zerefstbl.store.domain.model.Product;
 
+import com.zerefstbl.store.domain.validator.impl.FluentValidatorImpl;
 import main.java.com.zerefstbl.store.application.ports.out.SaveProductPort;
-import main.java.com.zerefstbl.store.domain.exceptions.ValidationException;
-import main.java.com.zerefstbl.store.domain.validator.FluentValidatorImpl;
 
 public class CreateProductService implements CreateProductUseCase {
 

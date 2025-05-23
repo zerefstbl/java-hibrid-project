@@ -1,4 +1,7 @@
-package main.java.com.zerefstbl.store.domain.validator;
+package com.zerefstbl.store.domain.validator.impl;
+
+import com.zerefstbl.store.domain.exceptions.ValidationException;
+import com.zerefstbl.store.domain.validator.FluentValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +19,18 @@ public class FluentValidatorImpl<T> implements FluentValidator<T> {
     @Override
     public void execute() {
         if (!errors.isEmpty()) {
-            throw new ValidationException(errors);
+            throw ValidationException.with(errors);
         }
     }
 
     @Override
     public FluentValidator<T> validate(Predicate<T> rule, String message) {
-        if (errors.isEmpty) {
+        if (errors.isEmpty()) {
             this.errors = new ArrayList<>();
         }
 
         if (rule.test(target)) {
-            errors.add(message);
+            errors.add(new Error(message));
         }
 
         return this;

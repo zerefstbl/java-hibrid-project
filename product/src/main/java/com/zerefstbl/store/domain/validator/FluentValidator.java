@@ -1,4 +1,4 @@
-package main.java.com.zerefstbl.store.domain.validator;
+package com.zerefstbl.store.domain.validator;
 
 import java.util.function.Predicate;
 

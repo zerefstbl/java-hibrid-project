@@ -2,7 +2,7 @@ package com.zerefstbl.store.domain.model;
 
 import java.math.BigDecimal;
 
-import main.java.com.zerefstbl.store.domain.validator.FluentValidatorImpl;
+import com.zerefstbl.store.domain.validator.impl.FluentValidatorImpl;
 
 public class Product {
 
@@ -36,7 +36,7 @@ public class Product {
     private void validate() {
         new FluentValidatorImpl<>(this)
                 .validate(p -> p.price.compareTo(BigDecimal.ZERO) < 0, "Invalid product price. Product must be have price more than 0")
-                .validate(p -> p.name != null || p.name.isEmpty, "Name should not be null os empty")
+                .validate(p -> p.name != null || p.name.isEmpty(), "Name should not be null os empty")
                 .execute();
     }
 

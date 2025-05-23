@@ -1,4 +1,4 @@
-package main.java.com.zerefstbl.store.domain.exceptions;
+package com.zerefstbl.store.domain.exceptions;
 
 import java.util.List;
 

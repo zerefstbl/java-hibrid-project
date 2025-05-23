@@ -17,8 +17,12 @@ public class UpdateProductService implements UpdateProductUseCase {
 
     @Override
     public UpdateProductOutput execute(UpdateProductCommand updateProductCommand) {
-        final Product product = Product.
-        return null;
+        final Product product = Product.with(
+                updateProductCommand.id(),
+                updateProductCommand.name(),
+                updateProductCommand.description(),
+                updateProductCommand.price());
+        return UpdateProductOutput.from(updateProductPort.update(product));
     }
 
 }
