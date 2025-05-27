@@ -25,7 +25,7 @@ public class FluentValidatorImpl<T> implements FluentValidator<T> {
 
     @Override
     public FluentValidator<T> validate(Predicate<T> rule, String message) {
-        if (errors.isEmpty()) {
+        if (errors == null) {
             this.errors = new ArrayList<>();
         }
 

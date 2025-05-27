@@ -2,7 +2,7 @@ package com.zerefstbl.store.application.services;
 
 import com.zerefstbl.store.application.ports.in.DeleteProductUseCase;
 
-import main.java.com.zerefstbl.store.application.ports.out.DeleteProductPort;
+import com.zerefstbl.store.application.ports.out.DeleteProductPort;
 
 public class DeleteProductService implements DeleteProductUseCase {
 

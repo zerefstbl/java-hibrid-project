@@ -1,4 +1,4 @@
-package main.java.com.zerefstbl.store.application.ports.out;
+package com.zerefstbl.store.application.ports.out;
 
 public interface DeleteProductPort {
     
